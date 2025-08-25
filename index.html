@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Portfolio Website</title>
+  <style>
+    /* === Reset & Transitions === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #074dda;
+      color: #4b0101;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 { margin-bottom: 15px; color: #1f3728; }
+    p { margin-bottom: 20px; }
+    a { text-decoration: none; color: #eb2525; }
+    a:hover { color: #d90606; }
+
+    /* === Navbar === */
+    nav.navbar {
+      background: #1f2937;
+      color: rgb(153, 6, 128);
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .navbar .logo { font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; }
+    .nav-links { list-style: none; display: flex; gap: 20px; }
+    .nav-links li a {
+      color: rgb(156, 236, 6);
+      padding: 8px 12px;
+      border-radius: 5px;
+    }
+    .nav-links li a:hover {
+      background: #facc15; color: #1f2937;
+    }
+    .menu-toggle {
+      display: none; color: white; font-size: 28px; cursor: pointer;
+    }
+
+    /* === Layout === */
+    main {
+      max-width: 1100px;
+      margin: 90px auto 20px;
+      padding: 0 20px;
+    }
+    section {
+      margin-bottom: 60px;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      opacity: 0; transform: translateY(30px);
+      animation: fadeInUp 1s forwards;
+    }
+    section:nth-of-type(1) { animation-delay: 0.2s; }
+    section:nth-of-type(2) { animation-delay: 0.4s; }
+    section:nth-of-type(3) { animation-delay: 0.6s; }
+    section:nth-of-type(4) { animation-delay: 0.8s; }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cards { display: flex; flex-wrap: wrap; gap: 20px; }
+    .card {
+      flex: 1 1 220px;
+      background: #e0e7ff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(31,41,55,0.1);
+      transform: scale(0.98);
+    }
+    .card:hover {
+      transform: scale(1);
+      box-shadow: 0 10px 25px rgba(31,41,55,0.2);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+    }
+    .gallery img {
+      width: 100%; border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      transform: scale(0.98);
+    }
+    .gallery img:hover {
+      transform: scale(1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    form {
+      display: flex; flex-direction: column; gap: 15px; max-width: 400px;
+    }
+    form input, form textarea {
+      padding: 12px 15px; border: 1px solid #ccc;
+      border-radius: 8px; font-size: 1rem;
+    }
+    form input:focus, form textarea:focus {
+      border-color: #facc15; box-shadow: 0 0 8px #facc15; outline: none;
+    }
+    form button {
+      background: #1f2937; color: white; font-weight: 600;
+      padding: 12px; border: none; border-radius: 8px; cursor: pointer;
+    }
+    form button:hover {
+      background: #facc15; color: #1f2937; transform: scale(1.05);
+    }
+
+    /* === Host Image Style === */
+    .host-photo {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      animation: photoBounce 2s ease-in-out infinite alternate;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes photoBounce {
+      0% {
+        transform: scale(1) translateY(0);
+      }
+      100% {
+        transform: scale(1.05) translateY(-10px);
+      }
+    }
+
+    /* === Footer === */
+    footer {
+      background: #1f2937; color: white;
+      text-align: center;
+      padding: 25px 10px;
+      border-radius: 0 0 10px 10px;
+      font-size: 0.9rem;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: fixed;
+        top: 60px; right: 0; width: 200px; height: calc(100% - 60px); padding: 20px;
+        background: #1f2937; }
+      .nav-links.show { display: flex; }
+      .menu-toggle { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" src="ad.mp3" loop></audio>
+
+  <nav class="navbar">
+    <div class="logo">Graphic Designer</div>
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#designing">Designing</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#registration">Registration</a></li>
+      <li><a href="#login">Login</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="home">
+      <img src="PAK.jpg" alt="Designer Photo" class="host-photo" />
+      <h1>Mohammad Aqib</h1>
+      <p>Professional Graphic Designer. Modern, creative, and user-friendly designs.</p>
+    </section>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I am Mohammad Aqib, an experienced graphic designer specializing in creative and modern web & mobile designs. My goal is to deliver designs that elevate your brand.</p>
+    </section>
+
+    <section id="services">
+      <h2>Our Services</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Logo Design</h3>
+          <img src="logo2.jpg" alt="" height="200">
+          <p>Unique and professional logos to establish your brand identity.</p>
+        </div>
+        <div class="card">
+          <h3>Branding</h3>
+          <img src="download (18).jpg" alt="">
+          <p>Complete branding solutions for businesses of all sizes.</p>
+        </div>
+        <div class="card">
+          <h3>Marketing Materials</h3>
+          <img src="images (16).jpg" alt="" height="200">
+          <p>Creative flyers, brochures, and social media posts that attract attention.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="designing">
+      <h2>Designing Expertise</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>CorelDRAW</h3>
+          <img src="download (16).jpg" alt="">
+          <p>Modern and professional work in CorelDRAW design.</p>
+        </div>
+        <div class="card">
+          <h3>Adobe Illustrator</h3>
+          <img src="download (15).jpg" alt="">
+          <p>Vector graphics and illustration with Illustrator.</p>
+        </div>
+        <div class="card">
+          <h3>Photoshop</h3>
+          <img src="download (17).jpg" alt="" height="200">
+          <p>Crop, expand, adjust color and apply effects with Photoshop.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <h2>Portfolio</h2>
+      <div class="gallery">
+        <img src="thum2.jpg" alt="Project 1" />
+        <img src="poster2.jpg" alt="Project 2" />
+        <img src="shirt1.jpg" alt="Project 3" />
+        <img src="logo2.jpg" alt="Project 4" />
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <form id="contactForm">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <section id="registration" class="auth-section">
+      <h2>Registration</h2>
+      <form id="registrationForm">
+        <input type="text" id="regName" placeholder="Full Name" required />
+        <input type="email" id="regEmail" placeholder="Email" required />
+        <input type="password" id="regPassword" placeholder="Password" required />
+        <button type="submit">Register</button>
+      </form>
+      <p id="regMessage" class="message"></p>
+    </section>
+
+    <section id="login" class="auth-section">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p id="loginMessage" class="message"></p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Mohammad Aqib. All rights reserved.
+  </footer>
+
+  <script>
+    // Menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.getElementById('nav-links');
+    menuToggle.addEventListener('click', ()=> navLinks.classList.toggle('show'));
+
+    // Smooth scroll
+    document.querySelectorAll('.nav-links a').forEach(link=>{
+      link.addEventListener('click', e=>{
+        e.preventDefault();
+        document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        navLinks.classList.remove('show');
+      });
+    });
+
+    // Music autoplay
+    window.addEventListener('load', ()=>{
+      const music = document.getElementById('bgMusic');
+      music.volume = 0.4;
+      music.play().catch(()=>{ /* Autoplay blocked */ });
+    });
+
+    // Forms behavior
+    document.getElementById('contactForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      alert('Thank you for your message! I will get back to you soon.');
+      e.target.reset();
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const msg = document.getElementById('regMessage');
+      msg.textContent = 'Registration successful!';
+      msg.style.color = 'green';
+      e.target.reset();
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', e=>{
+      e.preventDefault();
+      const msg = document.getElementById('loginMessage');
+      msg.textContent = 'Login successful!';
+      msg.style.color = 'green';
+      e.target.reset();
+    });
+  </script>
+
+</body>
+</html>
